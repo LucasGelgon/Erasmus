@@ -1,0 +1,313 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: url('images/paper-texture.jpg') repeat;
+  background-size: cover;
+  color: #2e2e2e;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 20%;
+  left: 0;
+  width: 80px;
+  height: 300px;
+  background: url('images/czech-ornament.png') no-repeat;
+  background-size: contain;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 20%;
+  left: 0;
+  width: 80px;
+  height: 300px;
+  background: url('images/czech-ornament.png') no-repeat;
+  background-size: contain;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+
+header {
+  text-align: center;
+  background: linear-gradient(135deg, #00695c, #00c49a);
+  color: white;
+  padding: 0.4rem 0.5rem;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  font-family: 'Shadows Into Light', cursive;
+  font-size: 1.6rem;
+  margin-bottom: 0.1rem;
+}
+
+header, footer {
+  flex-shrink: 0;
+}
+
+.subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 0;
+}
+
+
+footer {
+  text-align: center;
+  padding: 0.4rem;
+  font-size: 0.65rem;
+  background-color: #eeeeee;
+  color: #444;
+  border-top: 1px solid #ccc;
+}
+
+html, body {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.map-wrapper {
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.map-container {
+  --city-radius: 2rem;
+  --city-sign-color-back: #00695c;
+  --city-sign-color-font: #fff;
+  --city-pin-size-font: 1.2rem;
+  width: 100%;
+  max-width: 850px; 
+}
+
+.map-frame {
+  background: white;
+  border: 10px solid #c0aa91;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 4 / 3; 
+}
+
+.map-frame::before,
+.map-frame::after {
+  content: "✈️ 🎨 📚";
+  font-size: 2rem;
+  color: rgba(96, 96, 96, 0.2);
+  position: absolute;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.3rem;
+  z-index: 0;
+}
+
+.map-frame::before {
+  left: -2rem;
+  top: 1rem;
+}
+
+.map-frame::after {
+  right: -2rem;
+  bottom: 1rem;
+  transform: rotate(180deg);
+}
+
+.map-background {
+  background-image: url('images/Carte-vierge-de-la-Tchequie.png');
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  inset: 0;
+}
+
+.map-cities {
+  width: 100%;
+}
+
+.map-city {
+  position: absolute;
+  left: calc(var(--x) * 1% - var(--city-radius));
+  top: calc(var(--y) * 1% - var(--city-radius));
+  padding: var(--city-radius);
+}
+
+.map-city::before,
+.map-city::after {
+  font-size: var(--city-pin-size-font);
+}
+
+.map-city::before {
+  content: "•";
+  position: absolute;
+  top: calc(-0.65em + var(--city-radius));
+  left: calc(-50% + var(--city-radius));
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 1px 1px #000;
+}
+
+.map-city::after {
+  content: "📍";
+  position: absolute;
+  top: calc(-1em + var(--city-radius));
+  left: calc(-50% + var(--city-radius));
+  width: 100%;
+  text-align: center;
+  clip-path: inset(-0.5em 0 0 0);
+  transition: all 300ms ease-out;
+  z-index: var(--y);
+}
+
+.map-city__label {
+  display: none;
+  left: calc(-5em + 50%);
+  position: absolute;
+  text-align: center;
+  width: 10em;
+  z-index: 999;
+}
+
+.map-city__sign {
+  align-items: center;
+  background-color: var(--city-sign-color-back);
+  border-radius: 0.4rem;
+  border: 0.15em solid var(--city-sign-color-font);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  color: var(--city-sign-color-font);
+  display: flex;
+  font-weight: 700;
+  justify-content: center;
+  padding: 0.5em 1em;
+  width: max-content;
+  font-size: 0.95rem;
+}
+
+.map-city__sign::before {
+  content: attr(data-icon);
+  margin-right: 0.5em;
+}
+
+.map-city:hover::after {
+  clip-path: inset(-0.5em 0 0.5em 0);
+  transform: translateY(0.5em);
+}
+
+.map-city:hover .map-city__label {
+  animation: fadein 300ms forwards ease-out;
+  display: block;
+}
+
+.city-cracovie .map-city__label {
+  transform: translateX(-2.5em);
+}
+
+.city-vienne .map-city__label {
+  transform: translateY(-2em);
+}
+
+.city-bratislava .map-city__label {
+  transform: translateY(-2.2em);
+}
+
+.city-trnava .map-city__label {
+  transform: translateY(-1.5em);
+}
+
+/* STYLE DE BASE POUR TOUTES LES DÉCORATIONS */
+.deco {
+  position: fixed;
+  font-size: 2.8rem;
+  z-index: 0;
+  opacity: 0.08;
+  color: #444;
+  pointer-events: none;
+  transition: transform 0.3s;
+}
+.deco:hover {
+  opacity: 0.15;
+  transform: scale(1.1);
+}
+
+/* POSITIONS UNIQUES */
+.deco-train     { bottom: 13%; left: 7%; color: #c62828; }
+.deco-compass   { top: 24%; right: 4%; color: #1565c0; }
+.deco-map       { top: 32%; left: 13%; color: #2e7d32; }
+.deco-book      { bottom: 28%; right: 16%; color: #6a1b9a; }
+.deco-passport  { top: 50%; left: 4%; color: #283593; }
+.deco-plane     { bottom: 30%; left: 19%; color: #0277bd; }
+.deco-coffee    { top: 25%; left: 5%; color: #8d6e63; }
+.deco-landmark  { top: 35%; right: 18%; color: #d84315; }
+.deco-bicycle   { bottom: 12%; right: 10%; color: #00897b; }
+.deco-walking   { bottom: 45%; right: 8%; color: #546e7a; }
+
+/* ANIMATIONS */
+@keyframes floatUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes rotateSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
+}
+
+@keyframes drift {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
+
+.deco-train     { animation: floatUpDown 4s ease-in-out infinite; }
+.deco-compass   { animation: rotateSlow 20s linear infinite; transform-origin: center; }
+.deco-map       { animation: wobble 5s ease-in-out infinite; transform-origin: center; }
+.deco-book      { animation: floatUpDown 6s ease-in-out infinite; }
+.deco-passport  { animation: drift 5s ease-in-out infinite; }
+.deco-plane     { animation: floatUpDown 4.5s ease-in-out infinite; }
+.deco-coffee    { animation: wobble 6s ease-in-out infinite; }
+.deco-landmark  { animation: rotateSlow 30s linear infinite; transform-origin: center; }
+.deco-bicycle   { animation: floatUpDown 7s ease-in-out infinite; }
+.deco-walking   { animation: drift 6s ease-in-out infinite; }
+
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    top: calc(var(--city-radius));
+  }
+  100% {
+    opacity: 1;
+    top: calc(var(--city-radius) + var(--city-pin-size-font) / 2);
+  }
+}
